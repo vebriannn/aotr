@@ -1,0 +1,49 @@
+-- Ensure the game is loaded
+if game:IsLoaded() then
+    print("Game is already loaded, executing script.")
+else
+    game.Loaded:Wait()
+end
+
+local GameP = game.PlaceId
+
+-- Function to send notifications
+local function sendNotification(title, text)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Icon = "rbxassetid://13264701341"
+    })
+end
+
+-- Initial notifications
+sendNotification("Notification", "Checking")
+wait(0.1)
+sendNotification("Notification", "Check Place Id..")
+wait(0.1)
+
+-- Game specific logic
+local url
+
+if game.PlaceId == 12137249458 then  -- Gun Grounds
+    sendNotification("Notification", "Gun Grounds [" .. GameP .. "]")
+    url = "https://raw.githubusercontent.com/zerunquist/TekkitAotr/main/gungroundsffa"
+else
+    sendNotification("Notification", "Loading Aot:R Hub [" .. GameP .. "]")
+    url = "https://raw.githubusercontent.com/zerunquist/h/refs/heads/main/h"
+end
+
+-- Load and execute the script from the URL
+if url then
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+
+    if success then
+        loadstring(response)()
+    else
+        sendNotification("Error", "Failed to load script from URL: " .. url)
+    end
+else
+    sendNotification("Error", "No URL found for the current game.") -- h
+end
